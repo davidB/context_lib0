@@ -1,0 +1,40 @@
+plugins {
+    id "com.github.maiflai.scalatest" version "0.15"
+}
+
+apply plugin: 'scala'
+
+configurations {
+    testAgent {
+        transitive = false
+    }
+}
+
+dependencies {
+    compile project(":context_lib0-propagation")
+    compile "org.slf4j:slf4j-api:1.7.21"
+
+    compileOnly "com.google.inject:guice:4.0"
+    compileOnly "com.typesafe.akka:akka-actor_2.11:${v_akka}"
+
+    // We use Scalatest for testing our library
+    testCompile "org.scala-lang:scala-library:2.11.8"
+    testCompile "com.typesafe.akka:akka-actor_2.11:${v_akka}"
+    //testCompile "junit:junit:4.12"
+    testCompile "org.scalatest:scalatest_2.11:3.0.1"
+    testCompile "io.opentracing:opentracing-noop:${v_opentracing}"
+    testRuntime 'org.pegdown:pegdown:1.4.2'
+    testAgent "org.jboss.byteman:byteman:3.0.10"
+}
+
+test {
+    jvmArgs("-javaagent:${configurations.testAgent.singleFile}=resourcescript:context_lib0.btm", "-Dorg.jboss.byteman.compile.to.bytecode"/*, "-Dorg.jboss.byteman.verbose"*/)
+    include 'context_lib0/**'
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = false
+}
+//TODO add a step to check Byteman rule:
+// see https://developer.jboss.org/wiki/ABytemanTutorial#how_do_i_know_my_rules_are_correct
+// e.g java -classpath %BYTEMAN_HOME%\lib\byteman.jar org.jboss.byteman.check.TestScript thread.btm
+        //javaOptions in Test ++= Seq("-Dorg.jboss.byteman.compile.to.bytecode"/*, "-Dorg.jboss.byteman.verbose"*/),
+//        javaAgents += JavaAgent("org.jboss.byteman" % "byteman" % "3.0.10" % "compile;test", arguments = "resourcescript:app.btm"),

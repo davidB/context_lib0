@@ -1,0 +1,9 @@
+apply plugin: 'java'
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    compile "javax.inject:javax.inject:1"
+
+    compileOnly "com.google.inject:guice:4.0"
+    compileOnly "com.typesafe.akka:akka-actor_2.11:${v_akka}"
+}

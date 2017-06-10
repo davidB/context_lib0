@@ -1,0 +1,30 @@
+RULE wrapEnvelope
+CLASS akka.dispatch.Envelope$
+METHOD apply
+COMPILE
+HELPER context_lib0.propagation.helpers.AkkaHelpers
+AT ENTRY
+IF true
+DO $1 = wrapEnvelope($1)
+ENDRULE
+
+RULE unwrapEnvelope
+CLASS akka.dispatch.Envelope
+METHOD message
+COMPILE
+HELPER context_lib0.propagation.helpers.AkkaHelpers
+AT EXIT
+IF true
+#DO return unwrapEnvelope($!)
+DO $! = unwrapEnvelope($!)
+ENDRULE
+
+RULE wrapRunnableWithCurrentCtx
+INTERFACE scala.concurrent.ExecutionContext
+METHOD execute(Runnable)
+COMPILE
+HELPER context_lib0.propagation.helpers.ExecutionContextHelpers
+AT ENTRY
+IF true
+DO $1 = wrapRunnableWithCtxHolder($1)
+ENDRULE
