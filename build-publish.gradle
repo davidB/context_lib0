@@ -3,10 +3,35 @@
 //
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
+apply plugin: 'java'
 
 // documentation and samples: https://github.com/bintray/gradle-bintray-plugin
 project.ext.bintray_user = project.hasProperty('bintray_user') ? project.property('bintray_user') : System.getenv('BINTRAY_USER')
 project.ext.bintray_key = project.hasProperty('bintray_key') ? project.property('bintray_key') : System.getenv('BINTRAY_KEY')
+
+javadoc {
+  failOnError = false
+  options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+  options.docTitle = "${project.name} ${project.version} Javadoc"
+  options.windowTitle = "${project.name} ${project.version} Javadoc"
+  options.header = "<b>${project.name} ${project.version}</b>"
+  options.author = "true"
+  options.use = "true"
+  //disable doclint for JDK8, more quiet output
+  if (JavaVersion.current().isJava8Compatible()){
+      options.addStringOption('Xdoclint:none', '-quiet')
+  }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes, description: 'Creates a jar from the source files.') {
+  classifier = 'sources'
+  from sourceSets*.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc, description: 'Creates a jar from the javadoc files.') {
+  classifier = 'javadoc'
+  from javadoc.destinationDir
+}
 
 def pomConfig = {
   developers {
