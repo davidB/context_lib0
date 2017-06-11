@@ -13,16 +13,17 @@ configurations {
 dependencies {
     compile project(":context_lib0-propagation")
     compile "org.slf4j:slf4j-api:1.7.21"
+    compile "javax.inject:javax.inject:1"
+    compile "org.scala-lang:scala-library:2.11.8"
 
-    compileOnly "com.google.inject:guice:4.0"
-    compileOnly "com.typesafe.akka:akka-actor_2.11:${v_akka}"
+//    compileOnly "com.typesafe.akka:akka-actor_2.11:${v_akka}"
 
     // We use Scalatest for testing our library
     testCompile "org.scala-lang:scala-library:2.11.8"
     testCompile "com.typesafe.akka:akka-actor_2.11:${v_akka}"
     //testCompile "junit:junit:4.12"
     testCompile "org.scalatest:scalatest_2.11:3.0.1"
-    testCompile "io.opentracing:opentracing-noop:${v_opentracing}"
+//    testCompile "io.opentracing:opentracing-noop:${v_opentracing}"
     testRuntime 'org.pegdown:pegdown:1.4.2'
     testAgent "org.jboss.byteman:byteman:3.0.10"
 }
