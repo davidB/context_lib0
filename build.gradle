@@ -13,8 +13,8 @@ allprojects {
   project.ext.issue_url="${project.website_url}/issues"
   project.ext.scm_github_repo="davidB/${rootProject.name}"
   project.ext.scm_url="https://github.com/${project.scm_github_repo}"
-  project.ext.license_name="Apache-2.0" // use value of bintray license enum
-  project.ext.license_url="https://www.apache.org/licenses/LICENSE-2.0.txt"
+  project.ext.license_name="CC0-1.0" // use value of bintray license enum
+  project.ext.license_url="http://creativecommons.org/publicdomain/zero/1.0/"
   project.ext.license_year=Calendar.getInstance().get(Calendar.YEAR)
   project.ext.license_owner="David Bernard"
 }
